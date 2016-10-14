@@ -7,7 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.DatePicker;
+
 import java.time.format.DateTimeFormatter;
+
 import static java.time.LocalDate.now;
 
 /**
@@ -16,34 +18,14 @@ import static java.time.LocalDate.now;
 
 public class Controller {
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    String formattedDateValue;
     // Button Reset
     @FXML
     private Button btnBerechnen;
-    @FXML
-    private void actionBerechnen(ActionEvent actionEvent) {
-        // berechnen code
-        if (tabModus.equals("tabPunkte")) {
-            punkteBerechnen();
-            System.out.println("Punkte Berechnen button has been clicked");
-        } else if (tabModus.equals("tabNoten")) {
-            notenBerechnen();
-            System.out.println("Noten Berechnen button has been clicked");
-        }
-    }
     // Button Reset
     @FXML
     private Button btnReset;
-    @FXML
-    private void actionReset(ActionEvent actionEvent) {
-        // reset code
-        if (tabModus.equals("tabPunkte")) {
-            punkteReset();
-            System.out.println("Punkte Reset button has been clicked");
-        } else if (tabModus.equals("tabNoten")) {
-            notenReset();
-            System.out.println("Noten Reset button has been clicked");
-        }
-    }
     // Combo Kurs
     @FXML
     private ComboBox<Kurse> comboKurs;
@@ -53,7 +35,69 @@ public class Controller {
     @FXML
     private ComboBox<Semester> comboSemester;
     private ObservableList<Semester> myComboSemesterData = FXCollections.observableArrayList();
-
+    @FXML
+    private DatePicker pickerDate;
+    // Text Area output
+    @FXML
+    private TextArea txtErgebnis;
+    // Spinner
+    // Noten
+    @FXML
+    private Spinner<Integer> N1;
+    @FXML
+    private Spinner<Integer> N2;
+    @FXML
+    private Spinner<Integer> N3;
+    @FXML
+    private Spinner<Integer> N4;
+    @FXML
+    private Spinner<Integer> N5;
+    @FXML
+    private Spinner<Integer> N6;
+    // Punkte
+    @FXML
+    private Spinner<Integer> P0;
+    @FXML
+    private Spinner<Integer> P1;
+    @FXML
+    private Spinner<Integer> P2;
+    @FXML
+    private Spinner<Integer> P3;
+    @FXML
+    private Spinner<Integer> P4;
+    @FXML
+    private Spinner<Integer> P5;
+    @FXML
+    private Spinner<Integer> P6;
+    @FXML
+    private Spinner<Integer> P7;
+    @FXML
+    private Spinner<Integer> P8;
+    @FXML
+    private Spinner<Integer> P9;
+    @FXML
+    private Spinner<Integer> P10;
+    @FXML
+    private Spinner<Integer> P11;
+    @FXML
+    private Spinner<Integer> P12;
+    @FXML
+    private Spinner<Integer> P13;
+    @FXML
+    private Spinner<Integer> P14;
+    @FXML
+    private Spinner<Integer> P15;
+    // tabs
+    // Tab selection
+    private boolean tabSelection = false;
+    private boolean initReady = false;
+    private String tabModus;
+    @FXML
+    private Tab tabNoten;
+    @FXML
+    private Tab tabPunkte;
+    @FXML
+    private TabPane tabPane;
     public Controller() {
         // Create data for the Combo Boxes
         myComboKursData.add(new Kurse("1ku1"));
@@ -70,9 +114,28 @@ public class Controller {
     }
 
     @FXML
-    private DatePicker pickerDate;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    String formattedDateValue;
+    private void actionBerechnen(ActionEvent actionEvent) {
+        // berechnen code
+        if (tabModus.equals("tabPunkte")) {
+            punkteBerechnen();
+            System.out.println("Punkte Berechnen button has been clicked");
+        } else if (tabModus.equals("tabNoten")) {
+            notenBerechnen();
+            System.out.println("Noten Berechnen button has been clicked");
+        }
+    }
+
+    @FXML
+    private void actionReset(ActionEvent actionEvent) {
+        // reset code
+        if (tabModus.equals("tabPunkte")) {
+            punkteReset();
+            System.out.println("Punkte Reset button has been clicked");
+        } else if (tabModus.equals("tabNoten")) {
+            notenReset();
+            System.out.println("Noten Reset button has been clicked");
+        }
+    }
 
     @FXML
     private void actionChooseDate(ActionEvent actionEvent) {
@@ -116,24 +179,6 @@ public class Controller {
         System.out.println("comboSemester Action (selected: " + selectedSemester.toString() + ")");
 
     }
-    // Text Area output
-    @FXML
-    private TextArea txtErgebnis;
-
-    // Spinner
-    // Noten
-    @FXML
-    private Spinner<Integer> N1;
-    @FXML
-    private Spinner<Integer> N2;
-    @FXML
-    private Spinner<Integer> N3;
-    @FXML
-    private Spinner<Integer> N4;
-    @FXML
-    private Spinner<Integer> N5;
-    @FXML
-    private Spinner<Integer> N6;
 
     /**
      * Methode: noten-anzahlen aus jspinner einlesen und noten-array [i][1] damit füllen
@@ -147,40 +192,6 @@ public class Controller {
         Berechnungen.noten[2][1] = N2.getValue();
         Berechnungen.noten[1][1] = N1.getValue();
     }
-
-    // Punkte
-    @FXML
-    private Spinner<Integer> P0;
-    @FXML
-    private Spinner<Integer> P1;
-    @FXML
-    private Spinner<Integer> P2;
-    @FXML
-    private Spinner<Integer> P3;
-    @FXML
-    private Spinner<Integer> P4;
-    @FXML
-    private Spinner<Integer> P5;
-    @FXML
-    private Spinner<Integer> P6;
-    @FXML
-    private Spinner<Integer> P7;
-    @FXML
-    private Spinner<Integer> P8;
-    @FXML
-    private Spinner<Integer> P9;
-    @FXML
-    private Spinner<Integer> P10;
-    @FXML
-    private Spinner<Integer> P11;
-    @FXML
-    private Spinner<Integer> P12;
-    @FXML
-    private Spinner<Integer> P13;
-    @FXML
-    private Spinner<Integer> P14;
-    @FXML
-    private Spinner<Integer> P15;
 
     /**
      * Methode: punkte-anzahlen aus jspinner einlesen und punkte-array [i][1] damit füllen
@@ -205,20 +216,8 @@ public class Controller {
         Berechnungen.punkte[0][1] = P0.getValue();
     }
 
-    // tabs
-    // Tab selection
-    private boolean tabSelection = false;
-    private boolean initReady = false;
-    private String tabModus;
-
     @FXML
-    private Tab tabNoten;
-    @FXML
-    private Tab tabPunkte;
-    @FXML
-    private TabPane tabPane;
-
-    @FXML void tabNotenSelected(Event event) {
+    void tabNotenSelected(Event event) {
         if (checkTab()) {
             tabModus = tabNoten.getId();
             System.out.println(tabModus);
@@ -229,7 +228,9 @@ public class Controller {
             System.out.println("Punktereset nicht bei init");
         }
     }
-    @FXML void tabPunkteSelected(Event event) {
+
+    @FXML
+    void tabPunkteSelected(Event event) {
         if (checkTab()) {
             tabModus = tabPunkte.getId();
             System.out.println(tabModus);
