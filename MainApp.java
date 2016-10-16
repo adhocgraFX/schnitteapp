@@ -20,7 +20,7 @@ public class MainApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainApp.fxml"));
             BorderPane page = loader.load();
-            Scene scene = new Scene(page, 580, 420);
+            Scene scene = new Scene(page, 540, 420);
             scene.getStylesheets().add("styles.css");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);

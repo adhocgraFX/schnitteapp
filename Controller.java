@@ -1,16 +1,22 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+
 import javafx.fxml.FXML;
+
 import javafx.scene.control.*;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.DatePicker;
 
+import static java.time.LocalDate.now;
 import java.time.format.DateTimeFormatter;
 
-import static java.time.LocalDate.now;
+import static java.math.RoundingMode.DOWN;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by Hock on 06.10.2016.
@@ -18,8 +24,10 @@ import static java.time.LocalDate.now;
 
 public class Controller {
 
+    // datumsformat
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     String formattedDateValue;
+
     // Button Reset
     @FXML
     private Button btnBerechnen;
@@ -96,8 +104,7 @@ public class Controller {
     private Tab tabNoten;
     @FXML
     private Tab tabPunkte;
-    @FXML
-    private TabPane tabPane;
+
     public Controller() {
         // Create data for the Combo Boxes
         myComboKursData.add(new Kurse("1ku1"));
@@ -177,7 +184,6 @@ public class Controller {
     private void actionChooseSemester(ActionEvent actionEvent) {
         Semester selectedSemester = comboSemester.getSelectionModel().getSelectedItem();
         System.out.println("comboSemester Action (selected: " + selectedSemester.toString() + ")");
-
     }
 
     /**
@@ -323,6 +329,18 @@ public class Controller {
         resetInputValues();
     }
 
+    /**
+     * Methode Zahlen anch 2 kommastellen abschneiten
+     */
+    private String formatErgebnis(double ergebnis) {
+        // double auf 2 stellen hinter komma abschneiden, nicht runden
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(DOWN);
+
+        // formatiertes ergebnis ausgeben
+        return numberFormat.format(ergebnis);
+    }
+
     // Methode Punkte berechnen
     private void punkteBerechnen() {
 
@@ -360,9 +378,9 @@ public class Controller {
                     "Semester: " + schnitteP.kurs.semester + "\n" +
                     "Datum: " + formattedDateValue + "\n" +
                     "Anzahl der Arbeiten: " + schnitteP.anzahl + "\n" +
-                    "Punkteschnitt: " + schnitteP.schnittPunkte + "\n" +
-                    "Notenschnitt: " + schnitteP.schnittNoten + "\n" +
-                    "Arbeiten mit mangelhaft bzw. ungenügend: " + schnitteP.prozentUngenuegend + "%");
+                    "Punkteschnitt: " + formatErgebnis(schnitteP.schnittPunkte) + "\n" +
+                    "Notenschnitt: " + formatErgebnis(schnitteP.schnittNoten) + "\n" +
+                    "Arbeiten mit mangelhaft bzw. ungenügend: " + formatErgebnis(schnitteP.prozentUngenuegend) + "%");
         } else if (Berechnungen.klausurenAnzahlBerechnen() == 0) {
             txtErgebnis.setText(null);
             txtErgebnis.setText("Geben Sie zuerst Zahlenwerte ein.");
@@ -408,8 +426,8 @@ public class Controller {
                     "Semester: " + schnitteN.kurs.semester + "\n" +
                     "Datum: " + formattedDateValue + "\n" +
                     "Anzahl der Arbeiten: " + schnitteN.anzahl + "\n" +
-                    "Notenschnitt: " + schnitteN.schnittNoten + "\n" +
-                    "Arbeiten mit mangelhaft bzw. ungenügend: " + schnitteN.prozentUngenuegend + "%");
+                    "Notenschnitt: " + formatErgebnis(schnitteN.schnittNoten) + "\n" +
+                    "Arbeiten mit mangelhaft bzw. ungenügend: " + formatErgebnis(schnitteN.prozentUngenuegend) + "%");
         } else if (Berechnungen.schulaufgabenAnzahlBerechnen() == 0) {
             txtErgebnis.setText(null);
             txtErgebnis.setText("Geben Sie zuerst Zahlenwerte ein.");

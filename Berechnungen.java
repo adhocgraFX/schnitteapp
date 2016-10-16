@@ -57,10 +57,9 @@ public class Berechnungen {
     public static double punkteSchnittBerechnen(double punktesumme, int anzahl) {
         // Durchschnitt berechnen
         punkteschnitt = punktesumme / anzahl;
-        punkteschnitt = Math.round(100.0 * punkteschnitt) / 100.0;
+
         // Durchschnitt ausgeben
         return (punkteschnitt);
-
     }
 
     /**
@@ -72,11 +71,9 @@ public class Berechnungen {
     public static double notenSchnittBerechnen(double notensumme, int anzahl) {
         // Durchschnitt berechnen
         notenschnitt = notensumme / anzahl;
-        notenschnitt = Math.round(100.0 * notenschnitt) / 100.0;
 
         // Durchschnitt ausgeben
         return (notenschnitt);
-
     }
 
     /**
@@ -88,11 +85,9 @@ public class Berechnungen {
     public static double ungenuegendBerechnen(double anzahlungenuegend, int anzahl) {
         // Prozentsatz berechnen
         ungenuegend = anzahlungenuegend / anzahl * 100;
-        ungenuegend = Math.round(100.0 * ungenuegend) / 100.0;
 
         // Durchschnitt ausgeben
         return (ungenuegend);
-
     }
 
     /**
@@ -105,7 +100,6 @@ public class Berechnungen {
             punkte[i][0] = i;
             punkte[i][1] = 0;
         }
-
     }
 
     /**
