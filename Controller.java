@@ -6,10 +6,19 @@ import javafx.event.Event;
 
 import javafx.fxml.FXML;
 
+import javafx.print.PageLayout;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.DatePicker;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import static java.time.LocalDate.now;
 import java.time.format.DateTimeFormatter;
@@ -28,12 +37,6 @@ public class Controller {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     String formattedDateValue;
 
-    // Button Reset
-    @FXML
-    private Button btnBerechnen;
-    // Button Reset
-    @FXML
-    private Button btnReset;
     // Combo Kurs
     @FXML
     private ComboBox<Kurse> comboKurs;
@@ -121,6 +124,30 @@ public class Controller {
     }
 
     @FXML
+    private void initialize() {
+        // Init ComboBox items.
+        comboKurs.setItems(myComboKursData);
+        comboSemester.setItems(myComboSemesterData);
+
+        // allgemeiner reset
+        Berechnungen.punkteInstanziieren();
+        Berechnungen.notenInstanziieren();
+
+        // punkte-anzahlen zu noten-anzahlen
+        Berechnungen.notenSynchronisieren();
+
+        // noten inputs resetten
+        resetNotenInputValues();
+        // punkte inputs reset
+        resetPunkteInputValues();
+
+        // combos, datepicker und txt ergebnis resetten
+        resetInputValues();
+
+        System.out.println("initialize ausgeführt");
+    }
+
+    @FXML
     private void actionBerechnen(ActionEvent actionEvent) {
         // berechnen code
         if (tabModus.equals("tabPunkte")) {
@@ -148,30 +175,6 @@ public class Controller {
     private void actionChooseDate(ActionEvent actionEvent) {
         Berechnungen.datum = pickerDate.getValue();
         System.out.println("pickerDate Action selected: " + Berechnungen.datum);
-    }
-
-    @FXML
-    private void initialize() {
-        // Init ComboBox items.
-        comboKurs.setItems(myComboKursData);
-        comboSemester.setItems(myComboSemesterData);
-
-        // allgemeiner reset
-        Berechnungen.punkteInstanziieren();
-        Berechnungen.notenInstanziieren();
-
-        // punkte-anzahlen zu noten-anzahlen
-        Berechnungen.notenSynchronisieren();
-
-        // noten inputs resetten
-        resetNotenInputValues();
-        // punkte inputs reset
-        resetPunkteInputValues();
-
-        // combos, datepicker und txt ergebnis resetten
-        resetInputValues();
-
-        System.out.println("initialize ausgeführt");
     }
 
     @FXML
@@ -246,6 +249,40 @@ public class Controller {
             notenReset();
             System.out.println("Notenreset nicht bei init");
         }
+    }
+
+    /**
+     * Opens an about dialog.
+     */
+    @FXML
+    private void handleInfo() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Schnitte");
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(this.getClass().getResource("drawable/cut.png").toString()));
+
+        alert.setHeaderText("Info");
+        alert.setContentText("Johannes Hock \n" +
+                "www.adhocgrafx.de \n" +
+                "info@adhocgrafx.de");
+
+        alert.showAndWait();
+    }
+
+    /**
+     * Closes the application.
+     */
+    @FXML
+    private void handleExit() {
+        System.exit(0);
+    }
+
+    // printing
+    @FXML
+    private void handlePrint() {
+        print(txtErgebnis);
     }
 
     private boolean checkTab() {
@@ -439,5 +476,37 @@ public class Controller {
 
         // punkte-anzahlen zu noten-anzahlen
         Berechnungen.notenSynchronisieren();
+    }
+
+    private void print(Node node) {
+        Printer printer = Printer.getDefaultPrinter();
+        Stage dialogStage = new Stage(StageStyle.DECORATED);
+        PrinterJob job = PrinterJob.createPrinterJob(printer);
+
+        if (job != null) {
+            boolean showDialog = job.showPageSetupDialog(dialogStage);
+            if (showDialog) {
+                // make scalable snapshot
+                final WritableImage snapshot = node.snapshot(null, null);
+                final ImageView ivSnapshot = new ImageView(snapshot);
+                // get page layout
+                final PageLayout pageLayout = job.getJobSettings().getPageLayout();
+                // scale
+                final double scaleX = pageLayout.getPrintableWidth() / ivSnapshot.getImage().getWidth();
+                final double scaleY = pageLayout.getPrintableHeight() / ivSnapshot.getImage().getHeight();
+                final double scale = Math.min(scaleX, scaleY);
+                // scale if notwendig
+                if (scale < 1.0) {
+                    node.setScaleX(scale);
+                    node.setScaleY(scale);
+                }
+                boolean success = job.printPage(node);
+                if (success) {
+                    job.endJob();
+                }
+                node.setScaleX(1.0);
+                node.setScaleY(1.0);
+            }
+        }
     }
 }

@@ -9,51 +9,94 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0"
-            prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0"
+            prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controller">
     <top>
-        <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <buttons>
-                <ComboBox fx:id="comboKurs" onAction="#actionChooseKurs" prefWidth="150.0">
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ToolBar prefHeight="40.0" prefWidth="200.0"  GridPane.rowIndex="1">
                     <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="item1"/>
-                        </FXCollections>
+                        <ComboBox fx:id="comboKurs" onAction="#actionChooseKurs" prefWidth="70.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="item1"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <ComboBox fx:id="comboSemester" onAction="#actionChooseSemester" prefWidth="70.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="item1"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <DatePicker fx:id="pickerDate" onAction="#actionChooseDate" prefWidth="105.0"/>
+                        <Button mnemonicParsing="false" onAction="#actionBerechnen" text="Berechnen">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="drawable/stat.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#actionReset" text="Reset">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="drawable/undo_2.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#handlePrint" text="Print">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="drawable/print.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </items>
-                </ComboBox>
-                <ComboBox fx:id="comboSemester" onAction="#actionChooseSemester" prefWidth="150.0">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="item1"/>
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-                <DatePicker fx:id="pickerDate" onAction="#actionChooseDate" />
-                <Button fx:id="btnBerechnen" mnemonicParsing="false" onAction="#actionBerechnen" text="Berechnen">
-                    <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="drawable/stat.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="btnReset" mnemonicParsing="false" onAction="#actionReset" text="Reset">
-                    <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="drawable/undo.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </buttons>
-            <BorderPane.margin>
-                <Insets right="10.0"/>
-            </BorderPane.margin>
-        </ButtonBar>
-    </top>
+                </ToolBar>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Datei">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handlePrint" text="Drucken" />
+                            </items>
+                            <SeparatorMenuItem mnemonicParsing="false"/>
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Beenden" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Bearbeiten">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#actionBerechnen" text="Berechnen" />
+                            </items>
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#actionReset" text="Reset" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Hilfe">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleInfo" text="Info" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+        </GridPane>
+        </top>
     <center>
         <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="580.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs >
