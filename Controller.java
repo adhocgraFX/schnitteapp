@@ -1,31 +1,25 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-
 import javafx.fxml.FXML;
-
 import javafx.print.PageLayout;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import static java.time.LocalDate.now;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 
 import static java.math.RoundingMode.DOWN;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import static java.time.LocalDate.now;
 
 /**
  * Created by Hock on 06.10.2016.
@@ -367,7 +361,7 @@ public class Controller {
     }
 
     /**
-     * Methode Zahlen anch 2 kommastellen abschneiten
+     * Methode Zahlen auf 2 stellen hinter komma abschneiden, nicht runden
      */
     private String formatErgebnis(double ergebnis) {
         // double auf 2 stellen hinter komma abschneiden, nicht runden
@@ -394,6 +388,7 @@ public class Controller {
         Berechnungen.klausurenAnzahlBerechnen();
 
         if (Berechnungen.klausurenAnzahlBerechnen() != 0) {
+            // nur wenn werte vorliegen
             Berechnungen.punkteSchnittBerechnen(Berechnungen.temppunktesumme, Berechnungen.anzahl);
             Berechnungen.notenSchnittBerechnen(Berechnungen.tempnotensumme, Berechnungen.anzahl);
             Berechnungen.ungenuegendBerechnen(Berechnungen.tempungenuegend, Berechnungen.anzahl);
@@ -443,6 +438,7 @@ public class Controller {
         Berechnungen.schulaufgabenAnzahlBerechnen();
 
         if (Berechnungen.schulaufgabenAnzahlBerechnen() != 0) {
+            // nur wenn werte vorliegen
             Berechnungen.notenSchnittBerechnen(Berechnungen.tempnotensumme, Berechnungen.anzahl);
             Berechnungen.ungenuegendBerechnen(Berechnungen.tempungenuegend, Berechnungen.anzahl);
 
