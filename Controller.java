@@ -335,7 +335,7 @@ public class Controller {
 
     // Methode noten inputs reset
     private void resetNotenInputValues() {
-        // Wert auf 0 synchnisieren
+        // Wert auf 0 synchronisieren
         N6.getValueFactory().setValue(0);
         N5.getValueFactory().setValue(0);
         N4.getValueFactory().setValue(0);
